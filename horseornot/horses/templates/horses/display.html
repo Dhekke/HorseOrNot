@@ -1,0 +1,20 @@
+{% if horse %}
+{% if messages %}
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endif %}
+<p>{{ horse.name }}</p>
+<p>{{ content }}</p>
+<form action="{% url 'horses:submit' horse.id %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="profile" value="{{content}}" />
+    <p><input type="radio" name="profile_pick" id="real" value="real" />
+    <label for="real">{{ horse.real_profile }}</label></p>
+    <p><input type="radio" name="profile_pick" id="horse" value="horse" />
+    <label for="horse">{{ horse.horse_profile }}</label></p>
+    <input type="submit" value="Submit" />
+</form>
+{% else %}
+<p>No horse</p>
+{% endif %}
