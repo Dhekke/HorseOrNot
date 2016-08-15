@@ -10,14 +10,18 @@ from .models import Horse
 
 
 def index(request):
-    horse = Horse.objects.order_by('?')[0]
-    field = random.choice(['real_profile', 'horse_profile'])
-    data = getattr(horse, field)
     template = loader.get_template('horses/display.html')
-    context = RequestContext(request, {
-        'horse': horse,
-        'content': data,
-    })
+
+    try:
+        horse = Horse.objects.order_by('?')[0]
+        field = random.choice(['real_profile', 'horse_profile'])
+        data = getattr(horse, field)
+        context = RequestContext(request, {
+            'horse': horse,
+            'content': data,
+        })
+    except IndexError:
+        context = RequestContext(request)
 
     return HttpResponse(template.render(context))
 
