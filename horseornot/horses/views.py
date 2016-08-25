@@ -16,14 +16,14 @@ def index(request):
         horse = Horse.objects.order_by('?')[0]
         field = random.choice(['real_profile', 'horse_profile'])
         data = getattr(horse, field)
-        context = RequestContext(request, {
+        context = {
             'horse': horse,
             'content': data,
-        })
+        }
     except IndexError:
-        context = RequestContext(request)
+        context = {}
 
-    return HttpResponse(template.render(context))
+    return render(request, 'horses/display.html', context)
 
 def display_horse(request, profile_id):
     horse = Horse.objects.get(pk=profile_id)
